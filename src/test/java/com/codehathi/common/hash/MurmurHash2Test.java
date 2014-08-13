@@ -46,6 +46,11 @@ public class MurmurHash2Test {
         short data = -8;
         byte[] b = ByteBuffer.allocate(2).putShort(data).array();
 
+        System.out.println(Integer.toHexString(data));
+
+        System.out.println(Integer.toHexString(b[0]));
+        System.out.println(Integer.toHexString(b[1]));
+
         System.out.println(MurmurHash2.hash(data));
         System.out.println(MurmurHash2.hash(b));
     }

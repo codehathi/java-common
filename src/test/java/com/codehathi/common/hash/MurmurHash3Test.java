@@ -1,6 +1,6 @@
 package com.codehathi.common.hash;
 
-import com.codehathi.common.hash.MurmurHash3;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.ByteBuffer;
@@ -10,64 +10,59 @@ public class MurmurHash3Test {
     @Test
     public void testIntegerHash() {
 
-        //System.out.println(MurmurHash3.hash(10));
-
-        int data = 100;
+        int data = -100;
 
         byte[] b = ByteBuffer.allocate(4).putInt(data).array();
 
-        System.out.println(MurmurHash3.hash(data));
-        System.out.println(MurmurHash3.hash(b, 4, -1));
+        Assert.assertEquals(MurmurHash3.hash(b, 4, -1), MurmurHash3.hash(data));
     }
 
     @Test
     public void testLongHash() {
-
-        //System.out.println(MurmurHash3.hash((long) 10));
-
         long data = -100;
 
         byte[] b = ByteBuffer.allocate(8).putLong(data).array();
 
-        System.out.println(MurmurHash3.hash(data));
-        System.out.println(MurmurHash3.hash(b, 8, -1));
+        Assert.assertEquals(MurmurHash3.hash(b, 8, -1), MurmurHash3.hash(data));
     }
 
-//    @Test
-//    public void testByte() {
-//        byte data = -5;
-//        byte[] b = ByteBuffer.allocate(1).put(data).array();
-//
-//        System.out.println(MurmurHash3.hash(data));
-//        System.out.println(MurmurHash3.hash(b, 1, -1));
-//    }
-//
-//    @Test
-//    public void testShort() {
-//        short data = -8;
-//        byte[] b = ByteBuffer.allocate(2).putShort(data).array();
-//
-//        System.out.println(MurmurHash3.hash(data));
-//        System.out.println(MurmurHash3.hash(b));
-//    }
-//
-//    @Test
-//    public void testFloat() {
-//        float data = -1.3f;
-//
-//        byte[] b = ByteBuffer.allocate(4).putFloat(data).array();
-//        System.out.println(MurmurHash3.hash(data));
-//        System.out.println(MurmurHash3.hash(b, b.length, -1));
-//    }
-//
-//    @Test
-//    public void testDouble() {
-//        double data = -1.3;
-//
-//        byte[] b = ByteBuffer.allocate(8).putDouble(data).array();
-//        System.out.println(MurmurHash3.hash(data));
-//        System.out.println(MurmurHash3.hash(b, b.length, -1));
-//    }
+    @Test
+    public void testByte() {
+        for (byte i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++) {
+            byte[] b = ByteBuffer.allocate(1).put(i).array();
+            Assert.assertEquals("Failed for " + i, MurmurHash3.hash(b), MurmurHash3.hash(i));
+            if (i == Byte.MAX_VALUE) {
+                break;
+            }
+        }
+    }
+
+    @Test
+    public void testShort() {
+        for (short i = Short.MIN_VALUE; i <= Short.MAX_VALUE; i++) {
+            byte[] b = ByteBuffer.allocate(2).putShort(i).array();
+            Assert.assertEquals("Failed for " + i, MurmurHash3.hash(b), MurmurHash3.hash(i));
+            if (i == Short.MAX_VALUE) {
+                break;
+            }
+        }
+    }
+
+    @Test
+    public void testFloat() {
+        float data = -1.3f;
+
+        byte[] b = ByteBuffer.allocate(4).putFloat(data).array();
+        Assert.assertEquals(MurmurHash3.hash(b, b.length, -1), MurmurHash3.hash(data));
+    }
+
+    @Test
+    public void testDouble() {
+        double data = -1.3;
+
+        byte[] b = ByteBuffer.allocate(8).putDouble(data).array();
+        Assert.assertEquals(MurmurHash3.hash(b, b.length, -1), MurmurHash3.hash(data));
+    }
 
     @Test
     public void testBytesHash() {
